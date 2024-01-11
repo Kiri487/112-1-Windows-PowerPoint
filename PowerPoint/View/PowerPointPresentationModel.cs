@@ -19,6 +19,7 @@ namespace PowerPoint.View
         private bool _isRectangleButtonChecked = false;
         private bool _isCircleButtonChecked = false;
         private bool _isArrowButtonChecked = true;
+        private bool _isPageCanDelete = false;
         private string _shapeDataGridViewColumnName;
         const string LINE = "線";
         const string RECTANGLE = "矩形";
@@ -84,6 +85,7 @@ namespace PowerPoint.View
         // "Add" button click event
         public void ClickAddShapeButton(string shapeType)
         {
+            _isPageCanDelete = false;
             _model.AddShape(shapeType);
             SetPointerMode();
         }
@@ -91,14 +93,16 @@ namespace PowerPoint.View
         // "Delete" button of shape data grid view click event
         public void ClickShapeDataGridViewDeleteButton(string columnName, int rowIndex)
         {
+            _isPageCanDelete = false;
             _shapeDataGridViewColumnName = columnName;
             if (_shapeDataGridViewColumnName == DELETE_SHAPE_COLUMN && rowIndex >= 0)
                 _model.DeleteShape(rowIndex);
         }
 
-        // Click line button check
+        // Click line button
         public void ClickLineButton()
         {
+            _isPageCanDelete = false;
             _isLineButtonChecked = !_isLineButtonChecked;
             _isRectangleButtonChecked = false;
             _isCircleButtonChecked = false;
@@ -117,9 +121,10 @@ namespace PowerPoint.View
             }
         }
 
-        // Click rectangle button check
+        // Click rectangle button
         public void ClickRectangleButton()
         {
+            _isPageCanDelete = false;
             _isLineButtonChecked = false;
             _isRectangleButtonChecked = !_isRectangleButtonChecked;
             _isCircleButtonChecked = false;
@@ -138,9 +143,10 @@ namespace PowerPoint.View
             }
         }
 
-        // Click circle button check
+        // Click circle button
         public void ClickCircleButton()
         {
+            _isPageCanDelete = false;
             _isLineButtonChecked = false;
             _isRectangleButtonChecked = false;
             _isCircleButtonChecked = !_isCircleButtonChecked;
@@ -159,13 +165,35 @@ namespace PowerPoint.View
             }
         }
 
+        // Click add new page button
+        public void ClickAddNewPageButton(int currentPageIndex)
+        {
+            _isPageCanDelete = false;
+            _model.AddPage(currentPageIndex);
+            SetPointerMode();
+        }
+
+        // Click slide button
+        public void ClickSlideButton(int buttonIndex)
+        {
+            _model.SetCurrentPageIndex(buttonIndex);
+            _model.CancelSelect();
+            _isPageCanDelete = true;
+            SetPointerMode();
+        }
+
         // Handle key down event
         public void HandleKeyDown(Keys keyCode)
         {
             _keyCode = keyCode;
 
             if (_keyCode == Keys.Delete)
+            {
                 _model.DeleteShape();
+                if (_isPageCanDelete)
+                    _model.DeletePage();
+            }
+                
         }
 
         // Set pointer mode
@@ -210,6 +238,12 @@ namespace PowerPoint.View
             _model.Draw(graphics);
         }
 
+        // Draw slide button
+        public void DrawSlideButton(int pageIndex, IGraphics graphics)
+        {
+            _model.Draw(pageIndex, graphics);
+        }
+
         // Process pointer pressed
         public void ProcessPointerPressed(int pointX, int pointY)
         {
@@ -226,12 +260,14 @@ namespace PowerPoint.View
         // Process pointer released
         public void ProcessPointerReleased()
         {
+            _isPageCanDelete = false;
             _model.ProcessPointerReleased();
         }
 
         // Undo
         public void Undo()
         {
+            _isPageCanDelete = false;
             _model.Undo();
             SetPointerMode();
         }
@@ -239,14 +275,20 @@ namespace PowerPoint.View
         // Redo
         public void Redo()
         {
+            _isPageCanDelete = false;
             _model.Redo();
             SetPointerMode();
         }
 
         // Calculate control width
-        public int CalculateControlWidth(int containerWidth, int margin)
+        public int CalculateControlWidth(int containerWidth, int containerHeight, int margin)
         {
-            return containerWidth - margin;
+            if (containerHeight < containerWidth * CANVAS_RATE)
+            {
+                return (int)((float)(containerHeight - margin) / CANVAS_RATE);
+            }
+            else
+                return containerWidth - margin;
         }
 
         // Calculate control width
@@ -259,6 +301,30 @@ namespace PowerPoint.View
         public int CalculateControlTop(int containerHeight, int controlHeight)
         {
             return (int)((containerHeight - controlHeight) * HALF);
+        }
+
+        // Calculate control left
+        public int CalculateControlLeft(int containerWidth, int controlWidth)
+        {
+            return (int)((containerWidth - controlWidth) * HALF);
+        }
+
+        // Calculate slide button width
+        public int CalculateSlideButtonWidth(int containerWidth, int margin)
+        {
+            return containerWidth - margin;
+        }
+
+        // Calculate slide button top
+        public int CalculateSlideButtonTop(int slideButtonTop, int slideButtonHeight, int margin)
+        {
+            return slideButtonTop + slideButtonHeight + margin;
+        }
+
+        // Calculate data grid view width
+        public int CalculateDataGridViewWidth(int containerWidth, int margin)
+        {
+            return containerWidth - margin;
         }
 
         // Calculate data grid view height

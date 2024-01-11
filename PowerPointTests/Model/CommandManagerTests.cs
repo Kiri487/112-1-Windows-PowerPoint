@@ -8,7 +8,8 @@ namespace PowerPoint.Model.Tests
     {
         CommandManager _commandManager;
         PrivateObject _commandManagerPrivate;
-        Shapes _shapes = new Shapes();
+        List<Shapes> _pageList = new List<Shapes>();
+        PageIndex _currentPageIndex = new PageIndex(0);
         const string LINE = "線";
 
         // Initialize
@@ -23,10 +24,10 @@ namespace PowerPoint.Model.Tests
         [TestMethod()]
         public void ExecuteTest()
         {
-            _commandManager.Execute(new AddCommand(_shapes, LINE));
+            _commandManager.Execute(new AddShapeCommand(_pageList, _currentPageIndex, LINE));
             Assert.AreEqual(1, ((Stack<ICommand>)_commandManagerPrivate.GetFieldOrProperty("_undoStack")).Count);
 
-            _commandManager.Execute(new DeleteCommand(_shapes, 0));
+            _commandManager.Execute(new DeleteShapeCommand(_pageList, _currentPageIndex, 0));
             Assert.AreEqual(2, ((Stack<ICommand>)_commandManagerPrivate.GetFieldOrProperty("_undoStack")).Count);
             Assert.AreEqual(0, ((Stack<ICommand>)_commandManagerPrivate.GetFieldOrProperty("_redoStack")).Count);
         }
@@ -38,8 +39,8 @@ namespace PowerPoint.Model.Tests
             Assert.IsFalse(_commandManager.IsUndo());
             _commandManager.Undo();
             Assert.IsFalse(_commandManager.IsUndo());
-            _commandManager.Execute(new AddCommand(_shapes, LINE));
-            _commandManager.Execute(new DeleteCommand(_shapes, 0));
+            _commandManager.Execute(new AddShapeCommand(_pageList, _currentPageIndex, LINE));
+            _commandManager.Execute(new DeleteShapeCommand(_pageList, _currentPageIndex, 0));
             Assert.AreEqual(2, ((Stack<ICommand>)_commandManagerPrivate.GetFieldOrProperty("_undoStack")).Count);
             _commandManager.Undo();
             Assert.AreEqual(1, ((Stack<ICommand>)_commandManagerPrivate.GetFieldOrProperty("_undoStack")).Count);
@@ -53,8 +54,8 @@ namespace PowerPoint.Model.Tests
         [TestMethod()]
         public void RedoTest()
         {
-            _commandManager.Execute(new AddCommand(_shapes, LINE));
-            _commandManager.Execute(new DeleteCommand(_shapes, 0));
+            _commandManager.Execute(new AddShapeCommand(_pageList, _currentPageIndex, LINE));
+            _commandManager.Execute(new DeleteShapeCommand(_pageList, _currentPageIndex, 0));
             _commandManager.Undo();
             _commandManager.Undo();
             _commandManager.Redo();
@@ -71,7 +72,7 @@ namespace PowerPoint.Model.Tests
         public void IsUndoTest()
         {
             Assert.IsFalse(_commandManager.IsUndo());
-            _commandManager.Execute(new AddCommand(_shapes, LINE));
+            _commandManager.Execute(new AddShapeCommand(_pageList, _currentPageIndex, LINE));
             Assert.IsTrue(_commandManager.IsUndo());
             _commandManager.Undo();
             Assert.IsFalse(_commandManager.IsUndo());
@@ -82,11 +83,11 @@ namespace PowerPoint.Model.Tests
         public void IsRedoTest()
         {
             Assert.IsFalse(_commandManager.IsRedo());
-            _commandManager.Execute(new AddCommand(_shapes, LINE));
+            _commandManager.Execute(new AddShapeCommand(_pageList, _currentPageIndex, LINE));
             _commandManager.Undo();
             Assert.IsTrue(_commandManager.IsRedo());
             _commandManager.Redo();
-            _commandManager.Execute(new DeleteCommand(_shapes, 0));
+            _commandManager.Execute(new DeleteShapeCommand(_pageList, _currentPageIndex, 0));
             Assert.IsFalse(_commandManager.IsRedo());
         }
     }

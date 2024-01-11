@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
 
 namespace PowerPoint.Model.Tests
 {
@@ -7,7 +8,8 @@ namespace PowerPoint.Model.Tests
     {
         DrawCommand _drawCommand;
         PrivateObject _drawCommandPrivate;
-        Shapes _shapes = new Shapes();
+        List<Shapes> _pageList = new List<Shapes>();
+        PageIndex _currentPageIndex = new PageIndex(0);
         CoordinatePoint _startPoint = new CoordinatePoint(10, 20);
         CoordinatePoint _endPoint = new CoordinatePoint(30, 50);
         const string LINE = "線";
@@ -16,7 +18,7 @@ namespace PowerPoint.Model.Tests
         [TestInitialize()]
         public void Initialize()
         { 
-            _drawCommand = new DrawCommand(_shapes, LINE, _startPoint, _endPoint);
+            _drawCommand = new DrawCommand(_pageList, _currentPageIndex, LINE, _startPoint, _endPoint);
             _drawCommandPrivate = new PrivateObject(_drawCommand);
         }
 

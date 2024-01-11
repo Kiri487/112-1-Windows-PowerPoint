@@ -46,10 +46,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Model\AddCommand.cs" />
-    <Compile Include="Model\DeleteCommand.cs" />
+    <Compile Include="Model\AddShapeCommand.cs" />
+    <Compile Include="Model\AddPageCommand.cs" />
+    <Compile Include="Model\DeletePageCommand.cs" />
+    <Compile Include="Model\PageIndex.cs" />
+    <Compile Include="Model\DeleteShapeCommand.cs" />
     <Compile Include="Model\ScaleCommand.cs" />
-    <Compile Include="Model\MoveCommand.cs" />
+    <Compile Include="Model\MoveShapeCommand.cs" />
     <Compile Include="Model\DrawCommand.cs" />
     <Compile Include="Model\CommandManager.cs" />
     <Compile Include="Model\ICommand.cs" />

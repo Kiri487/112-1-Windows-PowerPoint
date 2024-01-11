@@ -1,20 +1,22 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
 
 namespace PowerPoint.Model.Tests
 {
     [TestClass()]
-    public class AddCommandTests
+    public class AddShapeCommandTests
     {
-        AddCommand _addCommand;
+        AddShapeCommand _addCommand;
         PrivateObject _addCommandPrivate;
-        Shapes _shapes = new Shapes();
+        List<Shapes> _pageList = new List<Shapes>();
+        PageIndex _currentPageIndex = new PageIndex(0);
         const string LINE = "線";
 
         // Initialize
         [TestInitialize()]
         public void Initialize()
         {
-            _addCommand = new AddCommand(_shapes, LINE);
+            _addCommand = new AddShapeCommand(_pageList, _currentPageIndex, LINE);
             _addCommandPrivate = new PrivateObject(_addCommand);
         }
 

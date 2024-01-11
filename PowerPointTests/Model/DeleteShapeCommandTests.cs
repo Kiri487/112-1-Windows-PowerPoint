@@ -1,20 +1,22 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
 
 namespace PowerPoint.Model.Tests
 {
     [TestClass()]
-    public class DeleteCommandTests
+    public class DeleteShapeCommandTests
     {
-        DeleteCommand _deleteCommand;
-        Shapes _shapes = new Shapes();
+        DeleteShapeCommand _deleteCommand;
+        List<Shapes> _pageList = new List<Shapes>();
+        PageIndex _currentPageIndex = new PageIndex(0);
         const string LINE = "線";
 
         // Initialize
         [TestInitialize()]
         public void Initialize()
         {
-            _shapes.AddShape(LINE);
-            _deleteCommand = new DeleteCommand(_shapes, 0);
+            _pageList[_currentPageIndex.GetPageIndex()].AddShape(LINE);
+            _deleteCommand = new DeleteShapeCommand(_pageList, _currentPageIndex, 0);
         }
 
         // Execute test
@@ -22,7 +24,7 @@ namespace PowerPoint.Model.Tests
         public void ExecuteTest()
         {
             _deleteCommand.Execute();
-            Assert.AreEqual(0, _shapes.GetShapesListLength());
+            Assert.AreEqual(0, _pageList[_currentPageIndex.GetPageIndex()].GetShapesListLength());
         }
 
         // Cancel execute test
@@ -31,7 +33,7 @@ namespace PowerPoint.Model.Tests
         {
             _deleteCommand.Execute();
             _deleteCommand.CancelExecute();
-            Assert.AreEqual(1, _shapes.GetShapesListLength());
+            Assert.AreEqual(1, _pageList[_currentPageIndex.GetPageIndex()].GetShapesListLength());
         }
     }
 }

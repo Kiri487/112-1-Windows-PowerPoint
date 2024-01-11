@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace PowerPoint.Model
 {
-    public class ScaleCommand : ICommand
+    public class MoveShapeCommand : ICommand
     {
         // Variable
         private List<Shapes> _pageList;
@@ -19,7 +15,7 @@ namespace PowerPoint.Model
         private float _offsetY;
         private bool _isAlreadySelect;
 
-        public ScaleCommand(List<Shapes> pageList, PageIndex currentPageIndex, float offsetX, float offsetY)
+        public MoveShapeCommand(List<Shapes> pageList, PageIndex currentPageIndex, float offsetX, float offsetY)
         {
             _pageList = pageList;
             _currentPageIndex = currentPageIndex;
@@ -36,7 +32,7 @@ namespace PowerPoint.Model
         {
             _isAlreadySelect = IsAlreadySelect();
             _pageList[_pageMemory].SetSelectShape(_shapeIndex);
-            _pageList[_pageMemory].Scale(_offsetX, _offsetY);
+            _pageList[_pageMemory].Move(_offsetX, _offsetY);
             _currentPageIndex.SetPageIndex(_pageMemory);
 
             if (!_isAlreadySelect)

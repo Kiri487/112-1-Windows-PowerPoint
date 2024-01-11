@@ -312,7 +312,7 @@ namespace PowerPoint.View.Tests
         [TestMethod()]
         public void CalculateControlWidthTest()
         {
-            Assert.AreEqual(5, _presentationModel.CalculateControlWidth(10, 5));
+            Assert.AreEqual(5, _presentationModel.CalculateControlWidth(10, 10, 5));
         }
 
         // Calculate control width test

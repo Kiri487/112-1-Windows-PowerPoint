@@ -1,4 +1,7 @@
-﻿namespace PowerPoint.Model
+﻿using System.Collections.Generic;
+using System.Linq;
+
+namespace PowerPoint.Model
 {
     public class PowerPointModel
     {
@@ -9,11 +12,16 @@
         public delegate void DrawingEventHandler();
         public event CanvasSizeChangedEventHandler _canvasSizeChanged;
         public delegate void CanvasSizeChangedEventHandler();
+        public event PageListChangedEventHandler _pageListChanged;
+        public delegate void PageListChangedEventHandler();
+        public event CurrentPageChangedEventHandler _currentPageChanged;
+        public delegate void CurrentPageChangedEventHandler();
 
         // Variable
-        Shapes _shapes = new Shapes();
+        List<Shapes> _pageList = new List<Shapes>();
         CommandManager _commandManager = new CommandManager();
         IState _state;
+        private PageIndex _currentPageIndex = new PageIndex(0);
         private int _canvasWidth = (int)POINT_X_MAX;
         private int _canvasHeight = (int)POINT_Y_MAX;
         private float _rateX = 1;
@@ -29,26 +37,65 @@
         {
             _state = new PointerState(this, _canvasWidth, _canvasHeight);
             _mode = POINTER_MODE;
+            _pageList.Add(new Shapes());
+        }
+
+        // Add new Page
+        public void AddPage(int previousPageIndex)
+        {
+            _commandManager.Execute(new AddPageCommand(_pageList, _currentPageIndex, previousPageIndex));
+            NotifyPageListChanged();
+            NotifyCurrentPageChanged();
+        }
+
+        // Delete page
+        public void DeletePage()
+        {
+            if (_pageList.Count() > 1)
+            {
+                _commandManager.Execute(new DeletePageCommand(_pageList, _currentPageIndex));
+                NotifyPageListChanged();
+                NotifyCurrentPageChanged();
+            }
+        }
+
+        // Set current page index
+        public void SetCurrentPageIndex(int pageIndex)
+        {
+            _currentPageIndex.SetPageIndex(pageIndex);
+            NotifyCurrentPageChanged();
+        }
+
+        // Get current page index
+        public int GetCurrentPageIndex()
+        {
+            return _currentPageIndex.GetPageIndex();
+        }
+
+        // Get page Length
+        public int GetPageLength()
+        {
+            return _pageList.Count();
         }
 
         // Add new shape to the shapes list
         public void AddShape(string shapeType)
         {
-            _commandManager.Execute(new AddCommand(_shapes, shapeType));
+            _commandManager.Execute(new AddShapeCommand(_pageList, _currentPageIndex, shapeType));
             NotifyShapeListChanged();
         }
 
         // Add new shape to the shapes list
         public void DrawShape(CoordinatePoint startPoint, CoordinatePoint endPoint)
         {
-            _commandManager.Execute(new DrawCommand(_shapes, _drawingShapeType, startPoint, endPoint));
+            _commandManager.Execute(new DrawCommand(_pageList, _currentPageIndex, _drawingShapeType, startPoint, endPoint));
             NotifyShapeListChanged();
         }
 
         // Delete shape from the shapes list
         public void DeleteShape()
         {
-            if (_shapes.IsSelect())
+            if (_pageList[_currentPageIndex.GetPageIndex()].IsSelect())
             {
                 DeleteShape(GetSelectShapeIndex());
             }
@@ -57,27 +104,34 @@
         // Delete shape from the shapes list
         public void DeleteShape(int index)
         {
-            _commandManager.Execute(new DeleteCommand(_shapes, index));
+            _commandManager.Execute(new DeleteShapeCommand(_pageList, _currentPageIndex, index));
             NotifyShapeListChanged();
         }
 
         // Get length of shapes list
         public int GetShapesListLength()
         {
-            return _shapes.GetShapesListLength();
+            return _pageList[_currentPageIndex.GetPageIndex()].GetShapesListLength();
         }
 
         // Get data of shape (type, coordinate point) by index
         public string[] GetShapeData(int index)
         {
-            return _shapes.GetShapeData(index, _rateX, _rateY);
+            return _pageList[_currentPageIndex.GetPageIndex()].GetShapeData(index, _rateX, _rateY);
         }
 
         // Draw shape
         public void Draw(IGraphics graphics)
         {
             graphics.ClearAll();
-            _shapes.Draw(graphics);
+            _pageList[_currentPageIndex.GetPageIndex()].Draw(graphics);
+        }
+
+        // Draw shape
+        public void Draw(int index, IGraphics graphics)
+        {
+            graphics.ClearAll();
+            _pageList[index].Draw(graphics);
         }
 
         // Get mode
@@ -101,7 +155,7 @@
         {
             _state = new DrawingState(this, _canvasWidth, _canvasHeight);
             _mode = DRAWING_MODE;
-            _shapes.CancelSelect();
+            _pageList[_currentPageIndex.GetPageIndex()].CancelSelect();
             NotifyDrawing();
         }
 
@@ -115,67 +169,76 @@
         public void SetDrawingShapeName(string shapeType)
         {
             _drawingShapeType = shapeType;
-            _shapes.SetDrawingShapeName(_drawingShapeType);
+            _pageList[_currentPageIndex.GetPageIndex()].SetDrawingShapeName(_drawingShapeType);
         }
 
         // create drawing shape
         public void CreateDrawingShape(CoordinatePoint startPoint, CoordinatePoint endPoint)
         {
-            _shapes.CreateDrawingShape(startPoint, endPoint);
+            _pageList[_currentPageIndex.GetPageIndex()].CreateDrawingShape(startPoint, endPoint);
         }
 
         // Delete drawing shape
         public void DeleteDrawingShape()
         {
-            _shapes.DeleteDrawingShape();
+            _pageList[_currentPageIndex.GetPageIndex()].DeleteDrawingShape();
+        }
+
+        // Cancel select shape
+        public void CancelSelect()
+        {
+            foreach (Shapes page in _pageList)
+            {
+                page.CancelSelect();
+            }
         }
 
         // Is shape select
         public bool IsSelect(float pointX, float pointY)
         {
-            return _shapes.IsSelect(pointX, pointY);
+            return _pageList[_currentPageIndex.GetPageIndex()].IsSelect(pointX, pointY);
         }
 
         // Get select shape index
         public int GetSelectShapeIndex()
         {
-            return _shapes.GetSelectShapeIndex();
+            return _pageList[_currentPageIndex.GetPageIndex()].GetSelectShapeIndex();
         }
 
         // Moving shape
         public void MovingShape(float offsetX, float offsetY)
         {
-            _shapes.Move(offsetX, offsetY);
+            _pageList[_currentPageIndex.GetPageIndex()].Move(offsetX, offsetY);
         }
 
         // Move shape
         public void MoveShape(float offsetX, float offsetY)
         {
-            _commandManager.Execute(new MoveCommand(_shapes, offsetX, offsetY));
+            _commandManager.Execute(new MoveShapeCommand(_pageList, _currentPageIndex, offsetX, offsetY));
         }
 
         // Is shape select
         public bool IsScale(float pointX, float pointY, float rateX, float rateY)
         {
-            return _shapes.IsScale(pointX, pointY, rateX, rateY);
+            return _pageList[_currentPageIndex.GetPageIndex()].IsScale(pointX, pointY, rateX, rateY);
         }
 
         // Scaling shape
         public void ScalingShape(float offsetX, float offsetY)
         {
-            _shapes.Scale(offsetX, offsetY);
+            _pageList[_currentPageIndex.GetPageIndex()].Scale(offsetX, offsetY);
         }
 
         // Scale shape
         public void ScaleShape(float offsetX, float offsetY)
         {
-            _commandManager.Execute(new ScaleCommand(_shapes, offsetX, offsetY));
+            _commandManager.Execute(new ScaleCommand(_pageList, _currentPageIndex, offsetX, offsetY));
         }
 
         // Reset shape point
         public void ResetShapePoint()
         {
-            _shapes.ResetPoint();
+            _pageList[_currentPageIndex.GetPageIndex()].ResetPoint();
         }
 
         // Process pointer pressed
@@ -221,6 +284,8 @@
             _commandManager.Undo();
             NotifyShapeListChanged();
             NotifyDrawing();
+            NotifyPageListChanged();
+            NotifyCurrentPageChanged();
         }
 
         // Is redo
@@ -235,6 +300,8 @@
             _commandManager.Redo();
             NotifyShapeListChanged();
             NotifyDrawing();
+            NotifyPageListChanged();
+            NotifyCurrentPageChanged();
         }
 
         // Notify shape list observer
@@ -256,6 +323,20 @@
         {
             if (_canvasSizeChanged != null)
                 _canvasSizeChanged();
+        }
+
+        // Notify page list observer
+        public void NotifyPageListChanged()
+        {
+            if (_pageListChanged != null)
+                _pageListChanged();
+        }
+
+        // Notify current page observer
+        public void NotifyCurrentPageChanged()
+        {
+            if (_currentPageChanged != null)
+                _currentPageChanged();
         }
     }
 }

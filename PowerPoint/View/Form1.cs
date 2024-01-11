@@ -1,7 +1,9 @@
 ﻿using PowerPoint.Model;
 using PowerPoint.View;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace PowerPoint
@@ -10,6 +12,8 @@ namespace PowerPoint
     {
         private PowerPointModel _model;
         private PowerPointPresentationModel _presentationModel;
+        List<Button> _slideButtonList = new List<Button>();
+        private int _currentPageIndex = 0;
         const string CURSOR = "Cursor";
         const string CHECKED = "Checked";
         const float POINT_X_MAX = 3200;
@@ -23,6 +27,7 @@ namespace PowerPoint
             InitializeComponent();
             Select();
             UpdateUndoAndRedo();
+            _slideButtonList.Add(_slideButton1);
 
             // Data Binding
             _canvas.DataBindings.Add(CURSOR, _presentationModel, "GetCursorType");
@@ -40,16 +45,30 @@ namespace PowerPoint
             _model._drawing += UpdateSlideButton;
             _model._canvasSizeChanged += UpdateCanvas;
             _model._canvasSizeChanged += UpdateShapeDataGridView;
+            _model._currentPageChanged += UpdateCanvas;
+            _model._currentPageChanged += UpdateShapeDataGridView;
+            _model._currentPageChanged += UpdateCurrentPageIndex;
+            _model._pageListChanged += UpdateUndoAndRedo;
+            _model._pageListChanged += UpdateSlideButtonList;
             _canvas.Paint += HandleCanvasPaint;
             _canvas.MouseDown += HandleCanvasPressed;
             _canvas.MouseMove += HandleCanvasMoved;
             _canvas.MouseUp += HandleCanvasReleased;
-            _slideButton1.Paint += HandleSlideButtonPaint;
+            _slideButtonList[0].Paint += HandleSlideButtonPaint;
+            _slideButtonList[0].LostFocus += HandleSlideButtonFocus;
 
             // Control size initialization
             ResizeSlideButton();
             ResizeCanvas();
             ResizeShapeDataGridView();
+        }
+
+        // On show
+        protected override void OnShown(EventArgs e)
+        {
+            base.OnShown(e);
+
+            _slideButtonList[0].Focus();
         }
 
         // Dispaly data of shape data grid view
@@ -111,10 +130,30 @@ namespace PowerPoint
             _presentationModel.Redo();
         }
 
+        // "Add New Page" button click event
+        private void ClickAddNewPageButton(object sender, EventArgs e)
+        {
+            _presentationModel.ClickAddNewPageButton(_currentPageIndex);
+        }
+
+        // Slide button click event
+        private void ClickSlideButton(object sender, EventArgs e)
+        {
+            int buttonIndex = _slideButtonList.IndexOf((Button)sender);
+            _presentationModel.ClickSlideButton(buttonIndex);
+        }
+
         // Handle key down event
         private void HandleKeyDown(object sender, KeyEventArgs e)
         {
             _presentationModel.HandleKeyDown(e.KeyCode);
+        }
+
+        // Combo box drop down Close event
+        private void CloseComboBoxDropDown(object sender, EventArgs e)
+        {
+            _currentPageIndex = _model.GetCurrentPageIndex();
+            _slideButtonList[_currentPageIndex].Focus();
         }
 
         // Paint
@@ -126,7 +165,16 @@ namespace PowerPoint
         // Paint on slide button
         public void HandleSlideButtonPaint(object sender, PaintEventArgs e)
         {
-            _presentationModel.Draw(new FormSlideButtonGraphicsAdaptor(e.Graphics, (float)_slideButton1.Width / POINT_X_MAX, (float)_slideButton1.Height / POINT_Y_MAX));
+            int buttonIndex = _slideButtonList.IndexOf((Button)sender);
+            _presentationModel.DrawSlideButton(buttonIndex, new FormSlideButtonGraphicsAdaptor(e.Graphics, (float)_slideButton1.Width / POINT_X_MAX, (float)_slideButton1.Height / POINT_Y_MAX));
+        }
+
+        // Focus on slide button
+        public void HandleSlideButtonFocus(object sender, EventArgs e)
+        {
+            int buttonIndex = _slideButtonList.IndexOf((Button)sender);
+            if (buttonIndex == _currentPageIndex && _chooseShapeComboBox.Focused == false)
+                ((Button)sender).Focus();
         }
 
         // Handle canvas pressed
@@ -164,7 +212,34 @@ namespace PowerPoint
         // Update slide button
         private void UpdateSlideButton()
         {
-            _slideButton1.Invalidate(true);
+            _slideButtonList[_currentPageIndex].Invalidate(true);
+        }
+
+        // Update slide button
+        private void UpdateSlideButtonList()
+        {
+            if (_slideButtonList.Count() < _model.GetPageLength())
+            {
+                _slideButtonList.Add(CreateNewSlideButton(_slideButtonList[_currentPageIndex].Top, _slideButtonList[_currentPageIndex].Width, _slideButtonList[_currentPageIndex].Height));
+                ResizeSlideButton();
+                this.Invalidate(true);
+            }
+            else if (_slideButtonList.Count() > _model.GetPageLength())
+            {
+                Button deleteButton = _slideButtonList[_slideButtonList.Count() - 1];
+                this.Controls.Remove(deleteButton);
+                deleteButton.Dispose();
+                _slideButtonList.RemoveAt(_slideButtonList.Count() - 1);
+                ResizeSlideButton();
+                this.Invalidate(true);
+            }
+        }
+
+        // Update current page index
+        private void UpdateCurrentPageIndex()
+        {
+            _currentPageIndex = _model.GetCurrentPageIndex();
+            _slideButtonList[_currentPageIndex].Focus();
         }
 
         // Update shape data grid view
@@ -197,24 +272,51 @@ namespace PowerPoint
         // Resize canvas
         private void ResizeCanvas()
         {
-            _canvas.Width = _presentationModel.CalculateControlWidth(_splitContainer2.Panel1.Width, MARGIN);
+            _canvas.Width = _presentationModel.CalculateControlWidth(_splitContainer2.Panel1.Width, _splitContainer2.Panel1.Height, MARGIN);
             _canvas.Height = _presentationModel.CalculateControlHeight(_canvas.Width);
             _canvas.Top = _presentationModel.CalculateControlTop(_splitContainer2.Panel1.Height, _canvas.Height);
+            _canvas.Left = _presentationModel.CalculateControlLeft(_splitContainer2.Panel1.Width, _canvas.Width);
             _model.GetCanvasSize(_canvas.Width, _canvas.Height);
         }
 
         // Resize slide button
         private void ResizeSlideButton()
         {
-            _slideButton1.Width = _presentationModel.CalculateControlWidth(_splitContainer1.Panel1.Width, MARGIN);
-            _slideButton1.Height = _presentationModel.CalculateControlHeight(_slideButton1.Width);
+
+            _slideButtonList[0].Width = _presentationModel.CalculateSlideButtonWidth(_splitContainer1.Panel1.Width, MARGIN);
+            _slideButtonList[0].Height = _presentationModel.CalculateControlHeight(_slideButtonList[0].Width);
+            for (int i = 1; i < _slideButtonList.Count(); i++)
+            {
+                _slideButtonList[i].Width = _presentationModel.CalculateSlideButtonWidth(_splitContainer1.Panel1.Width, MARGIN);
+                _slideButtonList[i].Height = _presentationModel.CalculateControlHeight(_slideButtonList[i].Width);
+                _slideButtonList[i].Top = _presentationModel.CalculateSlideButtonTop(_slideButtonList[i - 1].Top, _slideButtonList[i - 1].Height, MARGIN);
+            }
         }
 
         // Resize shape data grid view
         private void ResizeShapeDataGridView()
         {
-            _shapeDataGridView.Width = _presentationModel.CalculateControlWidth(_splitContainer2.Panel2.Width, MARGIN);
+            _shapeDataGridView.Width = _presentationModel.CalculateDataGridViewWidth(_splitContainer2.Panel2.Width, MARGIN);
             _shapeDataGridView.Height = _presentationModel.CalculateDataGridViewHeight(_splitContainer2.Panel2.Height, _shapeDataGridView.Top, MARGIN);
+        }
+
+        // Create new slide button
+        private Button CreateNewSlideButton(int previousSlideButtonTop, int previousSlideButtonWidth, int previousSlideButtonHeight)
+        {
+            Button slideButton = new Button();
+            slideButton.BackColor = SystemColors.ControlLightLight;
+            slideButton.ForeColor = SystemColors.ControlLightLight;
+            slideButton.Location = new Point(8, previousSlideButtonTop + previousSlideButtonHeight + MARGIN);
+            slideButton.Size = new Size(previousSlideButtonWidth, previousSlideButtonHeight);
+            slideButton.TabIndex = 4;
+            slideButton.UseVisualStyleBackColor = false;
+
+            slideButton.Paint += HandleSlideButtonPaint;
+            slideButton.LostFocus += HandleSlideButtonFocus;
+            slideButton.Click += new EventHandler(this.ClickSlideButton);
+            this._splitContainer1.Panel1.Controls.Add(slideButton);
+
+            return slideButton;
         }
     }
 }
