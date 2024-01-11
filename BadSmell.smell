@@ -193,7 +193,7 @@
               <Severity>Red</Severity>
               <Weight>1</Weight>
               <Project>PowerPoint</Project>
-              <File>Form1.cs</File>
+              <File>PowerPointForm.cs</File>
               <Line>67</Line>
               <StartLine>0</StartLine>
               <StartCol>0</StartCol>
@@ -338,22 +338,22 @@
                 <AnalysisFileType>Designer</AnalysisFileType>
               </AnalysisFile>
               <AnalysisFile>
+                <RelativePath>View\AddShapeForm.cs</RelativePath>
+                <ProjectName>PowerPoint</ProjectName>
+                <AnalysisFileType>ViewOrController</AnalysisFileType>
+              </AnalysisFile>
+              <AnalysisFile>
+                <RelativePath>View\AddShapeForm.Designer.cs</RelativePath>
+                <ProjectName>PowerPoint</ProjectName>
+                <AnalysisFileType>Designer</AnalysisFileType>
+              </AnalysisFile>
+              <AnalysisFile>
                 <RelativePath>View\DataBindingsToolStripButton.cs</RelativePath>
                 <ProjectName>PowerPoint</ProjectName>
                 <AnalysisFileType>Designer</AnalysisFileType>
               </AnalysisFile>
               <AnalysisFile>
                 <RelativePath>View\DoubleBufferedPanel.cs</RelativePath>
-                <ProjectName>PowerPoint</ProjectName>
-                <AnalysisFileType>Designer</AnalysisFileType>
-              </AnalysisFile>
-              <AnalysisFile>
-                <RelativePath>View\Form1.cs</RelativePath>
-                <ProjectName>PowerPoint</ProjectName>
-                <AnalysisFileType>ViewOrController</AnalysisFileType>
-              </AnalysisFile>
-              <AnalysisFile>
-                <RelativePath>View\Form1.Designer.cs</RelativePath>
                 <ProjectName>PowerPoint</ProjectName>
                 <AnalysisFileType>Designer</AnalysisFileType>
               </AnalysisFile>
@@ -366,6 +366,16 @@
                 <RelativePath>View\FormSlideButtonGraphicsAdaptor.cs</RelativePath>
                 <ProjectName>PowerPoint</ProjectName>
                 <AnalysisFileType>Model</AnalysisFileType>
+              </AnalysisFile>
+              <AnalysisFile>
+                <RelativePath>View\PowerPointForm.cs</RelativePath>
+                <ProjectName>PowerPoint</ProjectName>
+                <AnalysisFileType>ViewOrController</AnalysisFileType>
+              </AnalysisFile>
+              <AnalysisFile>
+                <RelativePath>View\PowerPointForm.Designer.cs</RelativePath>
+                <ProjectName>PowerPoint</ProjectName>
+                <AnalysisFileType>Designer</AnalysisFileType>
               </AnalysisFile>
               <AnalysisFile>
                 <RelativePath>View\PowerPointPresentationModel.cs</RelativePath>
@@ -464,7 +474,7 @@
               </AnalysisFile>
             </AnalysisFiles>
           </AnalysisFileManager>
-          <ProductionLoc>3288</ProductionLoc>
+          <ProductionLoc>3537</ProductionLoc>
           <TestLoc>4579</TestLoc>
         </CodeReview>
       </Data>

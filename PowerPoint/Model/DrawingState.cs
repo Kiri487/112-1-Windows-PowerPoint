@@ -67,7 +67,7 @@
             if (_isPressed)
             {
                 _isPressed = false;
-                _model.DrawShape(_startPoint, _endPoint);
+                _model.AddShape(_startPoint, _endPoint);
                 _model.DeleteDrawingShape();
             }
         }

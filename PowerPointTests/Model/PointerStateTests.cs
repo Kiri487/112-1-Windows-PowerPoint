@@ -22,7 +22,7 @@ namespace PowerPoint.Model.Tests
             CoordinatePoint startPoint = new CoordinatePoint(10, 10);
             CoordinatePoint endPoint = new CoordinatePoint(40, 40);
             _model.SetDrawingShapeName(LINE);
-            _model.DrawShape(startPoint, endPoint);
+            _model.AddShape(startPoint, endPoint);
         }
 
         // Update canvas size test

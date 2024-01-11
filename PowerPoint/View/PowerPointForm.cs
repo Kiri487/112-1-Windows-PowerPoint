@@ -86,6 +86,8 @@ namespace PowerPoint
         private void ClickAddShapeButton(object sender, EventArgs e)
         {
             _presentationModel.ClickAddShapeButton(_chooseShapeComboBox.Text);
+            Form addShapeForm = new AddShapeForm(_model, _canvas.Width, _canvas.Height);
+            addShapeForm.ShowDialog();
         }
 
         // "Delete" button of shape data grid view click event

@@ -79,16 +79,9 @@ namespace PowerPoint.Model
         }
 
         // Add new shape to the shapes list
-        public void AddShape(string shapeType)
+        public void AddShape(CoordinatePoint startPoint, CoordinatePoint endPoint)
         {
-            _commandManager.Execute(new AddShapeCommand(_pageList, _currentPageIndex, shapeType));
-            NotifyShapeListChanged();
-        }
-
-        // Add new shape to the shapes list
-        public void DrawShape(CoordinatePoint startPoint, CoordinatePoint endPoint)
-        {
-            _commandManager.Execute(new DrawCommand(_pageList, _currentPageIndex, _drawingShapeType, startPoint, endPoint));
+            _commandManager.Execute(new AddShapeCommand(_pageList, _currentPageIndex, _drawingShapeType, startPoint, endPoint));
             NotifyShapeListChanged();
         }
 

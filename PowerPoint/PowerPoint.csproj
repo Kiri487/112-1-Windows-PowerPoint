@@ -46,14 +46,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Model\AddShapeCommand.cs" />
     <Compile Include="Model\AddPageCommand.cs" />
     <Compile Include="Model\DeletePageCommand.cs" />
     <Compile Include="Model\PageIndex.cs" />
     <Compile Include="Model\DeleteShapeCommand.cs" />
     <Compile Include="Model\ScaleCommand.cs" />
     <Compile Include="Model\MoveShapeCommand.cs" />
-    <Compile Include="Model\DrawCommand.cs" />
+    <Compile Include="Model\AddShapeCommand.cs" />
     <Compile Include="Model\CommandManager.cs" />
     <Compile Include="Model\ICommand.cs" />
     <Compile Include="View\DataBindingsToolStripButton.cs">
@@ -63,6 +62,12 @@
     <Compile Include="Model\PointerState.cs" />
     <Compile Include="Model\IState.cs" />
     <Compile Include="Model\Circle.cs" />
+    <Compile Include="View\AddShapeForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\AddShapeForm.Designer.cs">
+      <DependentUpon>AddShapeForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="View\FormSlideButtonGraphicsAdaptor.cs" />
     <Compile Include="View\DoubleBufferedPanel.cs">
       <SubType>Component</SubType>
@@ -71,11 +76,11 @@
     <Compile Include="Model\IGraphics.cs" />
     <Compile Include="View\PowerPointPresentationModel.cs" />
     <Compile Include="Model\CoordinatePoint.cs" />
-    <Compile Include="View\Form1.cs">
+    <Compile Include="View\PowerPointForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="View\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="View\PowerPointForm.Designer.cs">
+      <DependentUpon>PowerPointForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Model\Line.cs" />
     <Compile Include="Model\PowerPointModel.cs" />
@@ -85,8 +90,11 @@
     <Compile Include="Model\Shape.cs" />
     <Compile Include="Model\ShapeFactory.cs" />
     <Compile Include="Model\Shapes.cs" />
-    <EmbeddedResource Include="View\Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="View\AddShapeForm.resx">
+      <DependentUpon>AddShapeForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\PowerPointForm.resx">
+      <DependentUpon>PowerPointForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -127,6 +135,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\_undoButton.Image.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\_addNewPageButton.Image.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

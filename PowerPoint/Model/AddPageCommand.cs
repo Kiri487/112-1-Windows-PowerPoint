@@ -29,7 +29,14 @@ namespace PowerPoint.Model
         public void CancelExecute()
         {
             _pageList.RemoveAt(_previousPageIndex + 1);
-            _currentPageIndex.SubtractPageIndex();
+            if (GetPageIndex(_currentPageIndex) > 0)
+                _currentPageIndex.SubtractPageIndex();
+        }
+
+        // Get page index
+        private int GetPageIndex(PageIndex pageIndex)
+        {
+            return pageIndex.GetPageIndex();
         }
     }
 }

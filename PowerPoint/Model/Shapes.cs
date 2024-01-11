@@ -19,12 +19,6 @@ namespace PowerPoint.Model
         {
         }
 
-        // Add new shape by type of shape
-        public void AddShape(string shapeType)
-        {
-            _shapesList.Add(_shapeFactory.CreateShape(shapeType));
-        }
-
         // Add new shape with start point and end point
         public void AddShape(CoordinatePoint startPoint, CoordinatePoint endPoint)
         {

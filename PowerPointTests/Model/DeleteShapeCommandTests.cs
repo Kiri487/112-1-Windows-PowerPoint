@@ -15,7 +15,8 @@ namespace PowerPoint.Model.Tests
         [TestInitialize()]
         public void Initialize()
         {
-            _pageList[_currentPageIndex.GetPageIndex()].AddShape(LINE);
+            _pageList[_currentPageIndex.GetPageIndex()].SetDrawingShapeName(LINE);
+            _pageList[_currentPageIndex.GetPageIndex()].AddShape(new CoordinatePoint(10, 10), new CoordinatePoint(20, 20));
             _deleteCommand = new DeleteShapeCommand(_pageList, _currentPageIndex, 0);
         }
 

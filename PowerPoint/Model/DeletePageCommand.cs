@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PowerPoint.Model
 {
-    class DeletePageCommand : ICommand
+    public class DeletePageCommand : ICommand
     {
         // Variable
         private List<Shapes> _pageList;

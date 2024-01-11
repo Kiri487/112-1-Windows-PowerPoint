@@ -86,7 +86,7 @@ namespace PowerPoint.View
         public void ClickAddShapeButton(string shapeType)
         {
             _isPageCanDelete = false;
-            _model.AddShape(shapeType);
+            _model.SetDrawingShapeName(shapeType);
             SetPointerMode();
         }
 
