@@ -24,6 +24,7 @@ namespace PowerPoint.View
         const string LINE = "線";
         const string RECTANGLE = "矩形";
         const string CIRCLE = "橢圓";
+        const string PAGE = "page";
         const string GET_CURSOR_TYPE = "GetCursorType";
         const string DELETE_SHAPE_COLUMN = "_deleteShapeColumn";
         const string IS_LINE_BUTTON_CHECKED = "IsLineButtonChecked";
@@ -116,9 +117,7 @@ namespace PowerPoint.View
                 _model.SetDrawingShapeName(LINE);
             }
             else
-            {
                 SetPointerMode();
-            }
         }
 
         // Click rectangle button
@@ -138,9 +137,7 @@ namespace PowerPoint.View
                 _model.SetDrawingShapeName(RECTANGLE);
             }
             else
-            {
                 SetPointerMode();
-            }
         }
 
         // Click circle button
@@ -160,9 +157,7 @@ namespace PowerPoint.View
                 _model.SetDrawingShapeName(CIRCLE);
             }
             else
-            {
                 SetPointerMode();
-            }
         }
 
         // Click add new page button
@@ -186,14 +181,12 @@ namespace PowerPoint.View
         public void HandleKeyDown(Keys keyCode)
         {
             _keyCode = keyCode;
-
             if (_keyCode == Keys.Delete)
             {
                 _model.DeleteShape();
                 if (_isPageCanDelete)
                     _model.DeletePage();
-            }
-                
+            }      
         }
 
         // Set pointer mode
@@ -222,13 +215,9 @@ namespace PowerPoint.View
         public void SetCursorType(string mode, bool isChange)
         {
             if (mode == POINTER_MODE)
-            {
                 _cursorType = isChange ? Cursors.SizeNWSE : Cursors.Arrow;
-            } 
             else // mode == DRAWING_MODE
-            {
                 _cursorType = Cursors.Cross;
-            }
             Notify(GET_CURSOR_TYPE);
         }
 
@@ -331,6 +320,12 @@ namespace PowerPoint.View
         public int CalculateDataGridViewHeight(int containerHeight, int controlTop, int margin)
         {
             return containerHeight - controlTop - margin;
+        }
+
+        // Set slide button text
+        public string SetSlideButtonText(int index)
+        {
+            return PAGE + (index + 1);
         }
 
         // Data Binding notify

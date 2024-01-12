@@ -68,6 +68,8 @@ namespace PowerPoint
         {
             base.OnShown(e);
 
+            _chooseShapeComboBox.SelectedIndex = 0;
+            _splitContainer2.SplitterDistance = _splitContainer2.Width - 300;
             _slideButtonList[0].Focus();
         }
 
@@ -274,7 +276,7 @@ namespace PowerPoint
         // Resize canvas
         private void ResizeCanvas()
         {
-            _canvas.Width = _presentationModel.CalculateControlWidth(_splitContainer2.Panel1.Width, _splitContainer2.Panel1.Height, MARGIN);
+            _canvas.Width = _presentationModel.CalculateControlWidth(_splitContainer2.Panel1.Width, _splitContainer2.Panel1.Height, 0);
             _canvas.Height = _presentationModel.CalculateControlHeight(_canvas.Width);
             _canvas.Top = _presentationModel.CalculateControlTop(_splitContainer2.Panel1.Height, _canvas.Height);
             _canvas.Left = _presentationModel.CalculateControlLeft(_splitContainer2.Panel1.Width, _canvas.Width);
@@ -292,6 +294,7 @@ namespace PowerPoint
                 _slideButtonList[i].Width = _presentationModel.CalculateSlideButtonWidth(_splitContainer1.Panel1.Width, MARGIN);
                 _slideButtonList[i].Height = _presentationModel.CalculateControlHeight(_slideButtonList[i].Width);
                 _slideButtonList[i].Top = _presentationModel.CalculateSlideButtonTop(_slideButtonList[i - 1].Top, _slideButtonList[i - 1].Height, MARGIN);
+                _slideButtonList[i].Text = _presentationModel.SetSlideButtonText(i);
             }
         }
 
