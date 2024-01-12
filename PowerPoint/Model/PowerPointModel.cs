@@ -20,6 +20,7 @@ namespace PowerPoint.Model
         // Variable
         List<Shapes> _pageList = new List<Shapes>();
         CommandManager _commandManager = new CommandManager();
+        GoogleDrive _googleDrive = new GoogleDrive();
         IState _state;
         private PageIndex _currentPageIndex = new PageIndex(0);
         private int _canvasWidth = (int)POINT_X_MAX;
@@ -181,9 +182,7 @@ namespace PowerPoint.Model
         public void CancelSelect()
         {
             foreach (Shapes page in _pageList)
-            {
                 page.CancelSelect();
-            }
         }
 
         // Is shape select
@@ -291,6 +290,24 @@ namespace PowerPoint.Model
         public void Redo()
         {
             _commandManager.Redo();
+            NotifyShapeListChanged();
+            NotifyDrawing();
+            NotifyPageListChanged();
+            NotifyCurrentPageChanged();
+        }
+
+        // Save
+        public void Save()
+        {
+            _googleDrive.Save(_pageList);
+        }
+
+        // Load
+        public void Load()
+        {
+            _googleDrive.Load(_pageList);
+            _commandManager.Clear();
+            _currentPageIndex.SetPageIndex(0);
             NotifyShapeListChanged();
             NotifyDrawing();
             NotifyPageListChanged();

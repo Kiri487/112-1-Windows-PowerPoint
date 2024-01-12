@@ -134,6 +134,20 @@ namespace PowerPoint
             _presentationModel.Redo();
         }
 
+        // "SAVE" button click event
+        private void ClickSaveButton(object sender, EventArgs e)
+        {
+            Form saveForm = new SaveForm(_model);
+            saveForm.ShowDialog();
+        }
+
+        // "LOAD" button click event
+        private void ClickLoadButton(object sender, EventArgs e)
+        {
+            Form loadForm = new LoadForm(_model);
+            loadForm.ShowDialog();
+        }
+
         // "Add New Page" button click event
         private void ClickAddNewPageButton(object sender, EventArgs e)
         {
@@ -217,18 +231,19 @@ namespace PowerPoint
         private void UpdateSlideButton()
         {
             _slideButtonList[_currentPageIndex].Invalidate(true);
+            this.Invalidate(true);
         }
 
         // Update slide button
         private void UpdateSlideButtonList()
         {
-            if (_slideButtonList.Count() < _model.GetPageLength())
+            while (_slideButtonList.Count() < _model.GetPageLength())
             {
                 _slideButtonList.Add(CreateNewSlideButton(_slideButtonList[_currentPageIndex].Top, _slideButtonList[_currentPageIndex].Width, _slideButtonList[_currentPageIndex].Height));
                 ResizeSlideButton();
                 this.Invalidate(true);
             }
-            else if (_slideButtonList.Count() > _model.GetPageLength())
+            while (_slideButtonList.Count() > _model.GetPageLength())
             {
                 Button deleteButton = _slideButtonList[_slideButtonList.Count() - 1];
                 this.Controls.Remove(deleteButton);

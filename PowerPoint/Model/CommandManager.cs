@@ -43,6 +43,13 @@ namespace PowerPoint.Model
             }
         }
 
+        // Clear undo and Undo
+        public void Clear()
+        {
+            _undoStack.Clear();
+            _redoStack.Clear();
+        }
+
         // Is undo
         public bool IsUndo()
         {
