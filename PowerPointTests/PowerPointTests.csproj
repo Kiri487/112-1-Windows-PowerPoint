@@ -84,6 +84,9 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="Model\AddPageCommandTests.cs" />
+    <Compile Include="Model\DeletePageCommandTests.cs" />
+    <Compile Include="Model\PageIndexTests.cs" />
     <Compile Include="Robot.cs" />
     <Compile Include="UITest.cs" />
     <Compile Include="MockObject\MockGraphics.cs" />

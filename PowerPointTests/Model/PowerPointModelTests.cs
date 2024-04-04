@@ -101,7 +101,7 @@ namespace PowerPoint.Model.Tests
         public void DeleteLineShapeWithIndexWhenListJustHasOneElementTest()
         {
             Assert.AreEqual(0, _model.GetShapesListLength());
-
+            _model.SetDrawingShapeName(LINE);
             _model.AddShape( _startPoint, _endPoint);
             Assert.AreEqual(LINE, (_model.GetShapeData(_model.GetShapesListLength() - 1))[1]);
             int index = _model.GetShapesListLength() - 1;
@@ -115,11 +115,13 @@ namespace PowerPoint.Model.Tests
         [TestMethod()]
         public void DeleteLineShapeWithIndexWhenShapeIsTheFirstTest()
         {
-            _model.AddShape( _startPoint, _endPoint);
-            Thread.Sleep(30);
-            _model.AddShape( _startPoint, _endPoint);
-            Thread.Sleep(30);
-            _model.AddShape( _startPoint, _endPoint);
+            for (int i = 1; i < 4; i++)
+            {
+                _startPoint = new CoordinatePoint(10 * i, 20 * i);
+                _endPoint = new CoordinatePoint(30 * i, 50 * i);
+                _model.SetDrawingShapeName(LINE);
+                _model.AddShape(_startPoint, _endPoint);
+            }
             int length = _model.GetShapesListLength();
             string info = _model.GetShapeData(0)[2];
 
@@ -132,11 +134,13 @@ namespace PowerPoint.Model.Tests
         [TestMethod()]
         public void DeleteLineShapeWithIndexWhenShapeIsTheMiddleTest()
         {
-            _model.AddShape( _startPoint, _endPoint);
-            Thread.Sleep(30);
-            _model.AddShape( _startPoint, _endPoint);
-            Thread.Sleep(30);
-            _model.AddShape( _startPoint, _endPoint);
+            for (int i = 1; i < 4; i++)
+            {
+                _startPoint = new CoordinatePoint(10 * i, 20 * i);
+                _endPoint = new CoordinatePoint(30 * i, 50 * i);
+                _model.SetDrawingShapeName(LINE);
+                _model.AddShape(_startPoint, _endPoint);
+            }
             int length = _model.GetShapesListLength();
             string info = _model.GetShapeData(1)[2];
 
@@ -149,11 +153,13 @@ namespace PowerPoint.Model.Tests
         [TestMethod()]
         public void DeleteLineShapeWithIndexWhenShapeIsTheLastTest()
         {
-            _model.AddShape( _startPoint, _endPoint);
-            Thread.Sleep(30);
-            _model.AddShape( _startPoint, _endPoint);
-            Thread.Sleep(30);
-            _model.AddShape( _startPoint, _endPoint);
+            for (int i = 1; i < 4; i++)
+            {
+                _startPoint = new CoordinatePoint(10 * i, 20 * i);
+                _endPoint = new CoordinatePoint(30 * i, 50 * i);
+                _model.SetDrawingShapeName(LINE);
+                _model.AddShape(_startPoint, _endPoint);
+            }
             int length = _model.GetShapesListLength();
             string info = _model.GetShapeData(length - 1)[2];
 
@@ -182,13 +188,13 @@ namespace PowerPoint.Model.Tests
         [TestMethod()]
         public void DeleteRectangleShapeWithIndexWhenShapeIsTheFirstTest()
         {
-            _model.SetDrawingShapeName(RECTANGLE);
-            _model.AddShape(_startPoint, _endPoint);
-            Thread.Sleep(30);
-            _model.SetDrawingShapeName(RECTANGLE);
-            _model.AddShape(_startPoint, _endPoint);
-            Thread.Sleep(30);
-            _model.SetDrawingShapeName(RECTANGLE);
+            for (int i = 1; i < 4; i++)
+            {
+                _startPoint = new CoordinatePoint(10 * i, 20 * i);
+                _endPoint = new CoordinatePoint(30 * i, 50 * i);
+                _model.SetDrawingShapeName(RECTANGLE);
+                _model.AddShape(_startPoint, _endPoint);
+            }
             _model.AddShape(_startPoint, _endPoint);
             int length = _model.GetShapesListLength();
             string info = _model.GetShapeData(0)[2];
@@ -202,12 +208,13 @@ namespace PowerPoint.Model.Tests
         [TestMethod()]
         public void DeleteRectangleShapeWithIndexWhenShapeIsTheMiddleTest()
         {
-            _model.SetDrawingShapeName(RECTANGLE);
-            _model.AddShape(_startPoint, _endPoint);
-            _model.SetDrawingShapeName(RECTANGLE);
-            _model.AddShape(_startPoint, _endPoint);
-            _model.SetDrawingShapeName(RECTANGLE);
-            _model.AddShape(_startPoint, _endPoint);
+            for (int i = 1; i < 4; i++)
+            {
+                _startPoint = new CoordinatePoint(10 * i, 20 * i);
+                _endPoint = new CoordinatePoint(30 * i, 50 * i);
+                _model.SetDrawingShapeName(RECTANGLE);
+                _model.AddShape(_startPoint, _endPoint);
+            }
             int length = _model.GetShapesListLength();
             string info = _model.GetShapeData(1)[2];
 
@@ -220,12 +227,13 @@ namespace PowerPoint.Model.Tests
         [TestMethod()]
         public void DeleteRectangleShapeWithIndexWhenShapeIsTheLastTest()
         {
-            _model.SetDrawingShapeName(RECTANGLE);
-            _model.AddShape(_startPoint, _endPoint); ;
-            _model.SetDrawingShapeName(RECTANGLE);
-            _model.AddShape(_startPoint, _endPoint);
-            _model.SetDrawingShapeName(RECTANGLE);
-            _model.AddShape(_startPoint, _endPoint);
+            for (int i = 1; i < 4; i++)
+            {
+                _startPoint = new CoordinatePoint(10 * i, 20 * i);
+                _endPoint = new CoordinatePoint(30 * i, 50 * i);
+                _model.SetDrawingShapeName(RECTANGLE);
+                _model.AddShape(_startPoint, _endPoint);
+            }
             int length = _model.GetShapesListLength();
             string info = _model.GetShapeData(length - 1)[2];
 
@@ -254,12 +262,13 @@ namespace PowerPoint.Model.Tests
         [TestMethod()]
         public void DeleteCircleShapeWithIndexWhenShapeIsTheFirstTest()
         {
-            _model.SetDrawingShapeName(CIRCLE);
-            _model.AddShape(_startPoint, _endPoint);
-            _model.SetDrawingShapeName(CIRCLE);
-            _model.AddShape(_startPoint, _endPoint);
-            _model.SetDrawingShapeName(CIRCLE);
-            _model.AddShape(_startPoint, _endPoint);
+            for (int i = 1; i < 4; i++)
+            {
+                _startPoint = new CoordinatePoint(10 * i, 20 * i);
+                _endPoint = new CoordinatePoint(30 * i, 50 * i);
+                _model.SetDrawingShapeName(CIRCLE);
+                _model.AddShape(_startPoint, _endPoint);
+            }
             int length = _model.GetShapesListLength();
             string info = _model.GetShapeData(0)[2];
 
@@ -272,12 +281,13 @@ namespace PowerPoint.Model.Tests
         [TestMethod()]
         public void DeleteCircleShapeWithIndexWhenShapeIsTheMiddleTest()
         {
-            _model.SetDrawingShapeName(CIRCLE);
-            _model.AddShape(_startPoint, _endPoint);
-            _model.SetDrawingShapeName(CIRCLE);
-            _model.AddShape(_startPoint, _endPoint);
-            _model.SetDrawingShapeName(CIRCLE);
-            _model.AddShape(_startPoint, _endPoint);
+            for (int i = 1; i < 4; i++)
+            {
+                _startPoint = new CoordinatePoint(10 * i, 20 * i);
+                _endPoint = new CoordinatePoint(30 * i, 50 * i);
+                _model.SetDrawingShapeName(CIRCLE);
+                _model.AddShape(_startPoint, _endPoint);
+            }
             int length = _model.GetShapesListLength();
             string info = _model.GetShapeData(1)[2];
 
@@ -290,12 +300,13 @@ namespace PowerPoint.Model.Tests
         [TestMethod()]
         public void DeleteCircleShapeWithIndexWhenShapeIsTheLastTest()
         {
-            _model.SetDrawingShapeName(CIRCLE);
-            _model.AddShape(_startPoint, _endPoint);
-            _model.SetDrawingShapeName(CIRCLE);
-            _model.AddShape(_startPoint, _endPoint);
-            _model.SetDrawingShapeName(CIRCLE);
-            _model.AddShape(_startPoint, _endPoint);
+            for (int i = 1; i < 4; i++)
+            {
+                _startPoint = new CoordinatePoint(10 * i, 20 * i);
+                _endPoint = new CoordinatePoint(30 * i, 50 * i);
+                _model.SetDrawingShapeName(CIRCLE);
+                _model.AddShape(_startPoint, _endPoint);
+            }
             int length = _model.GetShapesListLength();
             string info = _model.GetShapeData(length - 1)[2];
 
@@ -328,6 +339,7 @@ namespace PowerPoint.Model.Tests
         [TestMethod()]
         public void GetLineShapeDataTest()
         {
+            _model.SetDrawingShapeName(LINE);
             _model.AddShape( _startPoint, _endPoint);
             Assert.AreEqual(LINE, (_model.GetShapeData(_model.GetShapesListLength() - 1))[1]);
         }
@@ -354,6 +366,7 @@ namespace PowerPoint.Model.Tests
         [TestMethod()]
         public void DrawLineTest()
         {
+            _model.SetDrawingShapeName(LINE);
             _model.AddShape( _startPoint, _endPoint);
             _model.Draw(_mockGraphics);
             Assert.AreEqual(_model.GetShapeData(0)[2], _mockGraphicsPrivate.GetFieldOrProperty("_startPoint").ToString() + ", " + _mockGraphicsPrivate.GetFieldOrProperty("_endPoint").ToString());

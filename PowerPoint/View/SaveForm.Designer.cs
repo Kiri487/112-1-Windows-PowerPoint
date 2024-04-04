@@ -36,9 +36,10 @@ namespace PowerPoint.View
             // 
             // _saveButton
             // 
-            this._saveButton.Location = new System.Drawing.Point(27, 67);
+            this._saveButton.Location = new System.Drawing.Point(20, 54);
+            this._saveButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this._saveButton.Name = "_saveButton";
-            this._saveButton.Size = new System.Drawing.Size(75, 23);
+            this._saveButton.Size = new System.Drawing.Size(56, 18);
             this._saveButton.TabIndex = 0;
             this._saveButton.Text = "Save";
             this._saveButton.UseVisualStyleBackColor = true;
@@ -47,17 +48,19 @@ namespace PowerPoint.View
             // _saveLabel
             // 
             this._saveLabel.AutoSize = true;
-            this._saveLabel.Location = new System.Drawing.Point(58, 32);
+            this._saveLabel.Location = new System.Drawing.Point(44, 26);
+            this._saveLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this._saveLabel.Name = "_saveLabel";
-            this._saveLabel.Size = new System.Drawing.Size(112, 15);
+            this._saveLabel.Size = new System.Drawing.Size(89, 12);
             this._saveLabel.TabIndex = 1;
             this._saveLabel.Text = "是否確定儲存？";
             // 
             // _cancelButton
             // 
-            this._cancelButton.Location = new System.Drawing.Point(126, 67);
+            this._cancelButton.Location = new System.Drawing.Point(94, 54);
+            this._cancelButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this._cancelButton.Name = "_cancelButton";
-            this._cancelButton.Size = new System.Drawing.Size(75, 23);
+            this._cancelButton.Size = new System.Drawing.Size(56, 18);
             this._cancelButton.TabIndex = 2;
             this._cancelButton.Text = "Cancel";
             this._cancelButton.UseVisualStyleBackColor = true;
@@ -65,14 +68,16 @@ namespace PowerPoint.View
             // 
             // SaveForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(234, 111);
+            this.ClientSize = new System.Drawing.Size(176, 89);
             this.Controls.Add(this._cancelButton);
             this.Controls.Add(this._saveLabel);
             this.Controls.Add(this._saveButton);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "SaveForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.ResumeLayout(false);
             this.PerformLayout();
 

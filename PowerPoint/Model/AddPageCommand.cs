@@ -22,15 +22,14 @@ namespace PowerPoint.Model
         {
             _pageList.Insert(_previousPageIndex + 1, new Shapes());
             _currentPageIndex.SetPageIndex(_previousPageIndex + 1);
-
         }
 
         // Cancel excute
         public void CancelExecute()
         {
-            _pageList.RemoveAt(_previousPageIndex + 1);
             if (GetPageIndex(_currentPageIndex) > 0)
                 _currentPageIndex.SubtractPageIndex();
+            _pageList.RemoveAt(_previousPageIndex + 1);
         }
 
         // Get page index

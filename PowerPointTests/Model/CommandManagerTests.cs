@@ -10,6 +10,8 @@ namespace PowerPoint.Model.Tests
         PrivateObject _commandManagerPrivate;
         List<Shapes> _pageList = new List<Shapes>();
         PageIndex _currentPageIndex = new PageIndex(0);
+        CoordinatePoint _startPoint = new CoordinatePoint(10, 20);
+        CoordinatePoint _endPoint = new CoordinatePoint(30, 50);
         const string LINE = "線";
 
         // Initialize
@@ -40,7 +42,7 @@ namespace PowerPoint.Model.Tests
             Assert.IsFalse(_commandManager.IsUndo());
             _commandManager.Undo();
             Assert.IsFalse(_commandManager.IsUndo());
-            //_commandManager.Execute(new AddShapeCommand(_pageList, _currentPageIndex, LINE));
+            _commandManager.Execute(new AddShapeCommand(_pageList, _currentPageIndex, LINE, _startPoint, _endPoint));
             _commandManager.Execute(new DeleteShapeCommand(_pageList, _currentPageIndex, 0));
             Assert.AreEqual(2, ((Stack<ICommand>)_commandManagerPrivate.GetFieldOrProperty("_undoStack")).Count);
             _commandManager.Undo();
@@ -55,7 +57,7 @@ namespace PowerPoint.Model.Tests
         [TestMethod()]
         public void RedoTest()
         {
-            //_commandManager.Execute(new AddShapeCommand(_pageList, _currentPageIndex, LINE));
+            _commandManager.Execute(new AddShapeCommand(_pageList, _currentPageIndex, LINE, _startPoint, _endPoint));
             _commandManager.Execute(new DeleteShapeCommand(_pageList, _currentPageIndex, 0));
             _commandManager.Undo();
             _commandManager.Undo();
@@ -68,12 +70,24 @@ namespace PowerPoint.Model.Tests
 
         }
 
+        // Clear undo and Undo test
+        [TestMethod()]
+        public void ClearTest()
+        {
+            _commandManager.Execute(new AddShapeCommand(_pageList, _currentPageIndex, LINE, _startPoint, _endPoint));
+            _commandManager.Execute(new AddShapeCommand(_pageList, _currentPageIndex, LINE, _startPoint, _endPoint));
+            _commandManager.Undo();
+            _commandManager.Clear();
+            Assert.IsFalse(_commandManager.IsUndo());
+            Assert.IsFalse(_commandManager.IsRedo());
+        }
+
         // Is undo test
         [TestMethod()]
         public void IsUndoTest()
         {
             Assert.IsFalse(_commandManager.IsUndo());
-            //_commandManager.Execute(new AddShapeCommand(_pageList, _currentPageIndex, LINE));
+            _commandManager.Execute(new AddShapeCommand(_pageList, _currentPageIndex, LINE, _startPoint, _endPoint));
             Assert.IsTrue(_commandManager.IsUndo());
             _commandManager.Undo();
             Assert.IsFalse(_commandManager.IsUndo());
@@ -84,7 +98,7 @@ namespace PowerPoint.Model.Tests
         public void IsRedoTest()
         {
             Assert.IsFalse(_commandManager.IsRedo());
-            //_commandManager.Execute(new AddShapeCommand(_pageList, _currentPageIndex, LINE));
+            _commandManager.Execute(new AddShapeCommand(_pageList, _currentPageIndex, LINE, _startPoint, _endPoint));
             _commandManager.Undo();
             Assert.IsTrue(_commandManager.IsRedo());
             _commandManager.Redo();

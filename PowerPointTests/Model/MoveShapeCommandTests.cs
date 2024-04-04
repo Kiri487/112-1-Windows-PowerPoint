@@ -23,6 +23,7 @@ namespace PowerPoint.Model.Tests
         [TestInitialize()]
         public void Initialize()
         {
+            _pageList.Add(new Shapes());
         }
 
         // Line execute test

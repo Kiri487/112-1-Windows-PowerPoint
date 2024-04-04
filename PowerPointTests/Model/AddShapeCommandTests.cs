@@ -4,10 +4,10 @@ using System.Collections.Generic;
 namespace PowerPoint.Model.Tests
 {
     [TestClass()]
-    public class DrawCommandTests
+    public class AddShapeCommandTests
     {
-        AddShapeCommand _drawCommand;
-        PrivateObject _drawCommandPrivate;
+        AddShapeCommand _addShapeCommand;
+        PrivateObject _addShapeCommandPrivate;
         List<Shapes> _pageList = new List<Shapes>();
         PageIndex _currentPageIndex = new PageIndex(0);
         CoordinatePoint _startPoint = new CoordinatePoint(10, 20);
@@ -17,29 +17,30 @@ namespace PowerPoint.Model.Tests
         // Initialize
         [TestInitialize()]
         public void Initialize()
-        { 
-            _drawCommand = new AddShapeCommand(_pageList, _currentPageIndex, LINE, _startPoint, _endPoint);
-            _drawCommandPrivate = new PrivateObject(_drawCommand);
+        {
+            _pageList.Add(new Shapes());
+            _addShapeCommand = new AddShapeCommand(_pageList, _currentPageIndex, LINE, _startPoint, _endPoint);
+            _addShapeCommandPrivate = new PrivateObject(_addShapeCommand);
         }
 
         // Execute test
         [TestMethod()]
         public void ExecuteTest()
         {
-            _drawCommand.Execute();
-            Assert.AreEqual(1, _drawCommandPrivate.GetFieldOrProperty("_shapesListLength"));
-            Assert.AreEqual(LINE, _drawCommandPrivate.GetFieldOrProperty("_shapeType"));
-            Assert.AreEqual(_startPoint, (CoordinatePoint)_drawCommandPrivate.GetFieldOrProperty("_startPoint"));
-            Assert.AreEqual(_endPoint, (CoordinatePoint)_drawCommandPrivate.GetFieldOrProperty("_endPoint"));
+            _addShapeCommand.Execute();
+            Assert.AreEqual(1, _addShapeCommandPrivate.GetFieldOrProperty("_shapesListLength"));
+            Assert.AreEqual(LINE, _addShapeCommandPrivate.GetFieldOrProperty("_shapeType"));
+            Assert.AreEqual(_startPoint, (CoordinatePoint)_addShapeCommandPrivate.GetFieldOrProperty("_startPoint"));
+            Assert.AreEqual(_endPoint, (CoordinatePoint)_addShapeCommandPrivate.GetFieldOrProperty("_endPoint"));
         }
 
         // Cancel execute test
         [TestMethod()]
         public void CancelExecuteTest()
         {
-            _drawCommand.Execute();
-            _drawCommand.CancelExecute();
-            Assert.AreEqual(0, _drawCommandPrivate.GetFieldOrProperty("_shapesListLength"));
+            _addShapeCommand.Execute();
+            _addShapeCommand.CancelExecute();
+            Assert.AreEqual(0, _addShapeCommandPrivate.GetFieldOrProperty("_shapesListLength"));
         }
     }
 }

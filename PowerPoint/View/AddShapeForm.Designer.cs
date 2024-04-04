@@ -44,7 +44,7 @@ namespace PowerPoint.View
             // _upperLeftPointXLabel
             // 
             this._upperLeftPointXLabel.AutoSize = true;
-            this._upperLeftPointXLabel.Location = new System.Drawing.Point(26, 24);
+            this._upperLeftPointXLabel.Location = new System.Drawing.Point(13, 14);
             this._upperLeftPointXLabel.Name = "_upperLeftPointXLabel";
             this._upperLeftPointXLabel.Size = new System.Drawing.Size(79, 12);
             this._upperLeftPointXLabel.TabIndex = 0;
@@ -52,7 +52,7 @@ namespace PowerPoint.View
             // 
             // _upperLeftPointXTextBox
             // 
-            this._upperLeftPointXTextBox.Location = new System.Drawing.Point(28, 51);
+            this._upperLeftPointXTextBox.Location = new System.Drawing.Point(15, 41);
             this._upperLeftPointXTextBox.Name = "_upperLeftPointXTextBox";
             this._upperLeftPointXTextBox.Size = new System.Drawing.Size(77, 22);
             this._upperLeftPointXTextBox.TabIndex = 1;
@@ -60,7 +60,7 @@ namespace PowerPoint.View
             // 
             // _upperLeftPointYTextBox
             // 
-            this._upperLeftPointYTextBox.Location = new System.Drawing.Point(156, 51);
+            this._upperLeftPointYTextBox.Location = new System.Drawing.Point(117, 41);
             this._upperLeftPointYTextBox.Name = "_upperLeftPointYTextBox";
             this._upperLeftPointYTextBox.Size = new System.Drawing.Size(77, 22);
             this._upperLeftPointYTextBox.TabIndex = 3;
@@ -69,7 +69,7 @@ namespace PowerPoint.View
             // _upperLeftPointYLabel
             // 
             this._upperLeftPointYLabel.AutoSize = true;
-            this._upperLeftPointYLabel.Location = new System.Drawing.Point(154, 24);
+            this._upperLeftPointYLabel.Location = new System.Drawing.Point(115, 14);
             this._upperLeftPointYLabel.Name = "_upperLeftPointYLabel";
             this._upperLeftPointYLabel.Size = new System.Drawing.Size(79, 12);
             this._upperLeftPointYLabel.TabIndex = 2;
@@ -77,7 +77,7 @@ namespace PowerPoint.View
             // 
             // _lowerRightPointXTextBox
             // 
-            this._lowerRightPointXTextBox.Location = new System.Drawing.Point(28, 131);
+            this._lowerRightPointXTextBox.Location = new System.Drawing.Point(15, 109);
             this._lowerRightPointXTextBox.Name = "_lowerRightPointXTextBox";
             this._lowerRightPointXTextBox.Size = new System.Drawing.Size(77, 22);
             this._lowerRightPointXTextBox.TabIndex = 5;
@@ -86,7 +86,7 @@ namespace PowerPoint.View
             // _lowerRightPointXLabel
             // 
             this._lowerRightPointXLabel.AutoSize = true;
-            this._lowerRightPointXLabel.Location = new System.Drawing.Point(26, 104);
+            this._lowerRightPointXLabel.Location = new System.Drawing.Point(13, 82);
             this._lowerRightPointXLabel.Name = "_lowerRightPointXLabel";
             this._lowerRightPointXLabel.Size = new System.Drawing.Size(79, 12);
             this._lowerRightPointXLabel.TabIndex = 4;
@@ -94,7 +94,7 @@ namespace PowerPoint.View
             // 
             // _lowerRightPointYTextBox
             // 
-            this._lowerRightPointYTextBox.Location = new System.Drawing.Point(156, 131);
+            this._lowerRightPointYTextBox.Location = new System.Drawing.Point(117, 109);
             this._lowerRightPointYTextBox.Name = "_lowerRightPointYTextBox";
             this._lowerRightPointYTextBox.Size = new System.Drawing.Size(77, 22);
             this._lowerRightPointYTextBox.TabIndex = 7;
@@ -103,7 +103,7 @@ namespace PowerPoint.View
             // _lowerRightPointYLabel
             // 
             this._lowerRightPointYLabel.AutoSize = true;
-            this._lowerRightPointYLabel.Location = new System.Drawing.Point(154, 104);
+            this._lowerRightPointYLabel.Location = new System.Drawing.Point(115, 82);
             this._lowerRightPointYLabel.Name = "_lowerRightPointYLabel";
             this._lowerRightPointYLabel.Size = new System.Drawing.Size(79, 12);
             this._lowerRightPointYLabel.TabIndex = 6;
@@ -111,7 +111,7 @@ namespace PowerPoint.View
             // 
             // _okButton
             // 
-            this._okButton.Location = new System.Drawing.Point(28, 184);
+            this._okButton.Location = new System.Drawing.Point(15, 147);
             this._okButton.Name = "_okButton";
             this._okButton.Size = new System.Drawing.Size(75, 23);
             this._okButton.TabIndex = 8;
@@ -121,7 +121,7 @@ namespace PowerPoint.View
             // 
             // _cancelButton
             // 
-            this._cancelButton.Location = new System.Drawing.Point(156, 184);
+            this._cancelButton.Location = new System.Drawing.Point(117, 147);
             this._cancelButton.Name = "_cancelButton";
             this._cancelButton.Size = new System.Drawing.Size(75, 23);
             this._cancelButton.TabIndex = 9;
@@ -133,7 +133,7 @@ namespace PowerPoint.View
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(268, 225);
+            this.ClientSize = new System.Drawing.Size(212, 189);
             this.Controls.Add(this._cancelButton);
             this.Controls.Add(this._okButton);
             this.Controls.Add(this._lowerRightPointYTextBox);
@@ -146,6 +146,7 @@ namespace PowerPoint.View
             this.Controls.Add(this._upperLeftPointXLabel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "AddShapeForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "輸入座標新增圖形";
             this.ResumeLayout(false);
             this.PerformLayout();

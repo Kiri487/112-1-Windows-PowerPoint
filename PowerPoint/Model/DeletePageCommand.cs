@@ -26,9 +26,10 @@ namespace PowerPoint.Model
         public void Execute()
         {
             int deletePageIndex = GetDeletePageIndex();
-            _pageList.RemoveAt(deletePageIndex);
             if (deletePageIndex > 0)
                 _currentPageIndex.SubtractPageIndex();
+            _pageList.RemoveAt(deletePageIndex);
+            
         }
 
         // Cancel excute

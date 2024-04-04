@@ -36,9 +36,10 @@ namespace PowerPoint.View
             // 
             // _cancelButton
             // 
-            this._cancelButton.Location = new System.Drawing.Point(126, 67);
+            this._cancelButton.Location = new System.Drawing.Point(94, 54);
+            this._cancelButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this._cancelButton.Name = "_cancelButton";
-            this._cancelButton.Size = new System.Drawing.Size(75, 23);
+            this._cancelButton.Size = new System.Drawing.Size(56, 18);
             this._cancelButton.TabIndex = 5;
             this._cancelButton.Text = "Cancel";
             this._cancelButton.UseVisualStyleBackColor = true;
@@ -47,17 +48,19 @@ namespace PowerPoint.View
             // _loadLabel
             // 
             this._loadLabel.AutoSize = true;
-            this._loadLabel.Location = new System.Drawing.Point(58, 32);
+            this._loadLabel.Location = new System.Drawing.Point(44, 26);
+            this._loadLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this._loadLabel.Name = "_loadLabel";
-            this._loadLabel.Size = new System.Drawing.Size(112, 15);
+            this._loadLabel.Size = new System.Drawing.Size(89, 12);
             this._loadLabel.TabIndex = 4;
             this._loadLabel.Text = "是否確定載入？";
             // 
             // _loadButton
             // 
-            this._loadButton.Location = new System.Drawing.Point(27, 67);
+            this._loadButton.Location = new System.Drawing.Point(20, 54);
+            this._loadButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this._loadButton.Name = "_loadButton";
-            this._loadButton.Size = new System.Drawing.Size(75, 23);
+            this._loadButton.Size = new System.Drawing.Size(56, 18);
             this._loadButton.TabIndex = 3;
             this._loadButton.Text = "Load";
             this._loadButton.UseVisualStyleBackColor = true;
@@ -65,14 +68,16 @@ namespace PowerPoint.View
             // 
             // LoadForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(234, 111);
+            this.ClientSize = new System.Drawing.Size(176, 89);
             this.Controls.Add(this._cancelButton);
             this.Controls.Add(this._loadLabel);
             this.Controls.Add(this._loadButton);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "LoadForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.ResumeLayout(false);
             this.PerformLayout();
 

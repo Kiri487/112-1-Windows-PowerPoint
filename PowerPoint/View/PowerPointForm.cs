@@ -45,17 +45,17 @@ namespace PowerPoint
             _model._drawing += UpdateSlideButton;
             _model._canvasSizeChanged += UpdateCanvas;
             _model._canvasSizeChanged += UpdateShapeDataGridView;
-            _model._currentPageChanged += UpdateCanvas;
-            _model._currentPageChanged += UpdateShapeDataGridView;
-            _model._currentPageChanged += UpdateCurrentPageIndex;
-            _model._pageListChanged += UpdateUndoAndRedo;
-            _model._pageListChanged += UpdateSlideButtonList;
+            _model._pageChanged += UpdateUndoAndRedo;
+            _model._pageChanged += UpdateSlideButtonList;
+            _model._pageChanged += UpdateCanvas;
+            _model._pageChanged += UpdateShapeDataGridView;
+            _model._pageChanged += UpdateCurrentPageIndex;
+            _model._pageChanged += HandleSlideButtonFocus;
             _canvas.Paint += HandleCanvasPaint;
             _canvas.MouseDown += HandleCanvasPressed;
             _canvas.MouseMove += HandleCanvasMoved;
             _canvas.MouseUp += HandleCanvasReleased;
             _slideButtonList[0].Paint += HandleSlideButtonPaint;
-            _slideButtonList[0].LostFocus += HandleSlideButtonFocus;
 
             // Control size initialization
             ResizeSlideButton();
@@ -188,11 +188,13 @@ namespace PowerPoint
         }
 
         // Focus on slide button
-        public void HandleSlideButtonFocus(object sender, EventArgs e)
+        public void HandleSlideButtonFocus()
         {
-            int buttonIndex = _slideButtonList.IndexOf((Button)sender);
-            if (buttonIndex == _currentPageIndex && _chooseShapeComboBox.Focused == false)
-                ((Button)sender).Focus();
+            if (_chooseShapeComboBox.Focused == false)
+            {
+                UpdateCurrentPageIndex();
+                _slideButtonList[_currentPageIndex].Focus();
+            }
         }
 
         // Handle canvas pressed
@@ -225,13 +227,14 @@ namespace PowerPoint
         private void UpdateCanvas()
         {
             _canvas.Invalidate(true);
+            Invalidate(true);
         }
 
         // Update slide button
         private void UpdateSlideButton()
         {
             _slideButtonList[_currentPageIndex].Invalidate(true);
-            this.Invalidate(true);
+            _slideButtonList[_currentPageIndex].Focus();
         }
 
         // Update slide button
@@ -332,7 +335,6 @@ namespace PowerPoint
             slideButton.UseVisualStyleBackColor = false;
 
             slideButton.Paint += HandleSlideButtonPaint;
-            slideButton.LostFocus += HandleSlideButtonFocus;
             slideButton.Click += new EventHandler(this.ClickSlideButton);
             this._splitContainer1.Panel1.Controls.Add(slideButton);
 

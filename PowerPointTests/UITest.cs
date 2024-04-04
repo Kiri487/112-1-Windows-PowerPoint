@@ -20,7 +20,6 @@ namespace PowerPointTests
         private int _endY;
         private string targetAppPath;
         private const string MENU_FORM = "MenuForm";
-        private const string SLIDE_PANEL = "MenuForm";
 
         // Initialize
         [TestInitialize()]
@@ -55,9 +54,9 @@ namespace PowerPointTests
         public void DrawLineTest()
         {
             _startX = 10;
-            _startY = 10;
-            _offsetX = 90;
-            _offsetY = 80;
+            _startY = 100;
+            _offsetX = 40;
+            _offsetY = 40;
 
             ClickLineButtonTest();
             
@@ -112,10 +111,10 @@ namespace PowerPointTests
         [TestMethod]
         public void DrawRectangleTest()
         {
-            _startX = 10;
-            _startY = 10;
-            _offsetX = 90;
-            _offsetY = 100;
+            _startX = 73;
+            _startY = 61;
+            _offsetX = 30;
+            _offsetY = 10;
 
             ClickRectangleButtonTest();
             
@@ -132,7 +131,7 @@ namespace PowerPointTests
             _robot.ClickOnElementWithId("_canvas", _startX, _startY);
 
             int offsetX = 50;
-            int offsetY = 60;
+            int offsetY = 5;
 
             _robot.DragOnElement("_canvas", _startX, _startY, offsetX, offsetY);
 
@@ -170,10 +169,10 @@ namespace PowerPointTests
         [TestMethod]
         public void DrawCircleTest()
         {
-            _startX = 10;
-            _startY = 10;
-            _offsetX = 90;
-            _offsetY = 80;
+            _startX = 60;
+            _startY = 20;
+            _offsetX = 110;
+            _offsetY = 110;
             string[] data = { "刪除", "橢圓", "(" + _startX + ", " + _startY + "), (" + (_startX + _offsetX) + ", " + (_startY + _offsetY) + ")" };
 
             ClickCircleButtonTest();
@@ -188,8 +187,8 @@ namespace PowerPointTests
             DrawCircleTest();
             _robot.ClickOnElementWithId("_canvas", _startX, _startY);
 
-            int offsetX = 50;
-            int offsetY = 60;
+            int offsetX = 0;
+            int offsetY = 100;
 
             _robot.DragOnElement("_canvas", _startX, _startY, offsetX, offsetY);
 
@@ -282,7 +281,7 @@ namespace PowerPointTests
             _robot.AssertDataGridViewRowCountBy("_shapeDataGridView", 0);
 
             int offsetX = 50;
-            int offsetY = 60;
+            int offsetY = 5;
 
             _robot.ClickButtonWithName("Redo");
             string[] data = { "刪除", "矩形", "(" + (_startX + offsetX) + ", " + (_startY + offsetY) + "), (" + (_startX + _offsetX + offsetX) + ", " + (_startY + _offsetY + offsetY) + ")" };
@@ -297,8 +296,8 @@ namespace PowerPointTests
             _robot.ClickButtonWithName("Undo");
             _robot.AssertDataGridViewRowCountBy("_shapeDataGridView", 0);
 
-            int offsetX = 50;
-            int offsetY = 60;
+            int offsetX = 0;
+            int offsetY = 100;
 
             _robot.ClickButtonWithName("Redo");
             string[] data = { "刪除", "橢圓", "(" + (_startX + offsetX) + ", " + (_startY + offsetY) + "), (" + (_startX + _offsetX + offsetX) + ", " + (_startY + _offsetY + offsetY) + ")" };
@@ -553,7 +552,58 @@ namespace PowerPointTests
         [TestMethod]
         public void IntegrationTest()
         {
-            
+            ClickCircleButtonTest();
+            _robot.DragOnElement("_canvas", 60, 21, 170, 131);
+            ClickCircleButtonTest();
+            _robot.DragOnElement("_canvas", 60, 21, 170, 131);
+            _robot.ClickOnElementWithId("_canvas", 70, 30);
+            _robot.DragOnElement("_canvas", 70, 30, 0, 100);
+            ClickRectangleButtonTest();
+            _robot.DragOnElement("_canvas", 73, 61, 30, 10);
+            ClickRectangleButtonTest();
+            _robot.DragOnElement("_canvas", 73, 61, 30, 10);
+            _robot.ClickOnElementWithId("_canvas", 80, 65);
+            _robot.DragOnElement("_canvas", 80, 65, 80, 0);
+            ClickLineButtonTest();
+            _robot.DragOnElement("_canvas", 12, 104, 45, 44);
+            ClickLineButtonTest();
+            _robot.DragOnElement("_canvas", 230, 126, 50, -80);
+            ClickAddPageButtonTest();
+            ClickLineButtonTest();
+            _robot.DragOnElement("_canvas", 19, 201, 65, -104);
+            ClickLineButtonTest();
+            _robot.DragOnElement("_canvas", 84, 104, 126, 163);
+            ClickLineButtonTest();
+            _robot.DragOnElement("_canvas", 187, 222, 68, -80);
+            _robot.ChooseShape("_chooseShapeComboBox", "線");
+            _robot.ClickButtonWithName("新增");
+            _robot.EnterNumber("_upperLeftPointXTextBox", "261");
+            _robot.EnterNumber("_upperLeftPointYTextBox", "145");
+            _robot.EnterNumber("_lowerRightPointXTextBox", "444");
+            _robot.EnterNumber("_lowerRightPointYTextBox", "265");
+            _robot.ClickButtonWithName("OK");
+            ClickCircleButtonTest();
+            _robot.DragOnElement("_canvas", 314, 14, 85, 87);
+            _robot.ClickOnElementWithId("_canvas", 316, 90);
+            _robot.DragOnElement("_canvas", 328, 172, 30, 30);
+            _robot.ChooseShape("_chooseShapeComboBox", "矩形");
+            _robot.ClickButtonWithName("新增");
+            _robot.EnterNumber("_upperLeftPointXTextBox", "168");
+            _robot.EnterNumber("_upperLeftPointYTextBox", "35");
+            _robot.EnterNumber("_lowerRightPointXTextBox", "289");
+            _robot.EnterNumber("_lowerRightPointYTextBox", "56");
+            _robot.ClickButtonWithName("OK");
+            _robot.ChooseShape("_chooseShapeComboBox", "矩形");
+            _robot.ClickButtonWithName("新增");
+            _robot.EnterNumber("_upperLeftPointXTextBox", "117");
+            _robot.EnterNumber("_upperLeftPointYTextBox", "57");
+            _robot.EnterNumber("_lowerRightPointXTextBox", "231");
+            _robot.EnterNumber("_lowerRightPointYTextBox", "89");
+            _robot.ClickButtonWithName("OK");
+            _robot.ClickButtonWithName("Undo");
+            _robot.ClickButtonWithName("Redo");
+            ClickSlideButton1Test();
+            RizeWindowsTest();
         }
     }
 }

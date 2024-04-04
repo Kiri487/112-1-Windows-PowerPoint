@@ -10,6 +10,7 @@ using OpenQA.Selenium;
 using System.Windows.Input;
 using System.Windows.Forms;
 using OpenQA.Selenium.Interactions;
+using System.IO;
 
 namespace PowerPointTests
 {
@@ -21,7 +22,12 @@ namespace PowerPointTests
         private const string CONTROL_NOT_FOUND_EXCEPTION = "The specific control is not found!!";
         private const string WIN_APP_DRIVER_URI = "http://127.0.0.1:4723";
         private const string CHECKED = "1048724";
-        const float RATE = (float)9 / (float)16;
+        private const string MANY_DIRECTORY = "..\\..\\..\\..\\..\\..\\";
+        private const string WORKING_DIRECTORY = "appWorkingDir";
+        private const string PROJECT_NAME = "PowerPoint\\PowerPoint";
+        private const string BINARY_DIRECTORY = "bin\\Debug\\";
+        private const string DIRECTORY = "PowerPoint.exe";
+        private const float RATE = (float)9 / (float)16;
 
         // constructor
         public Robot(string targetAppPath, string root)
@@ -36,6 +42,10 @@ namespace PowerPointTests
             var options = new AppiumOptions();
             options.AddAdditionalCapability("app", targetAppPath);
             options.AddAdditionalCapability("deviceName", "WindowsPC");
+
+            string solutionPath = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..\\..\\..\\"));
+            options.AddAdditionalCapability("appWorkingDir", Path.GetFullPath(Path.Combine(solutionPath, "PowerPoint", "bin", "Debug")));
+
 
             _driver = new WindowsDriver<WindowsElement>(new Uri(WIN_APP_DRIVER_URI), options);
             _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);

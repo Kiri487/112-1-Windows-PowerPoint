@@ -12,10 +12,8 @@ namespace PowerPoint.Model
         public delegate void DrawingEventHandler();
         public event CanvasSizeChangedEventHandler _canvasSizeChanged;
         public delegate void CanvasSizeChangedEventHandler();
-        public event PageListChangedEventHandler _pageListChanged;
-        public delegate void PageListChangedEventHandler();
-        public event CurrentPageChangedEventHandler _currentPageChanged;
-        public delegate void CurrentPageChangedEventHandler();
+        public event PageChangedEventHandler _pageChanged;
+        public delegate void PageChangedEventHandler();
 
         // Variable
         List<Shapes> _pageList = new List<Shapes>();
@@ -45,8 +43,7 @@ namespace PowerPoint.Model
         public void AddPage(int previousPageIndex)
         {
             _commandManager.Execute(new AddPageCommand(_pageList, _currentPageIndex, previousPageIndex));
-            NotifyPageListChanged();
-            NotifyCurrentPageChanged();
+            NotifyPageChanged();
         }
 
         // Delete page
@@ -55,8 +52,7 @@ namespace PowerPoint.Model
             if (_pageList.Count() > 1)
             {
                 _commandManager.Execute(new DeletePageCommand(_pageList, _currentPageIndex));
-                NotifyPageListChanged();
-                NotifyCurrentPageChanged();
+                NotifyPageChanged();
             }
         }
 
@@ -64,7 +60,7 @@ namespace PowerPoint.Model
         public void SetCurrentPageIndex(int pageIndex)
         {
             _currentPageIndex.SetPageIndex(pageIndex);
-            NotifyCurrentPageChanged();
+            NotifyPageChanged();
         }
 
         // Get current page index
@@ -90,9 +86,7 @@ namespace PowerPoint.Model
         public void DeleteShape()
         {
             if (_pageList[_currentPageIndex.GetPageIndex()].IsSelect())
-            {
                 DeleteShape(GetSelectShapeIndex());
-            }
         }
 
         // Delete shape from the shapes list
@@ -274,10 +268,7 @@ namespace PowerPoint.Model
         public void Undo()
         {
             _commandManager.Undo();
-            NotifyShapeListChanged();
-            NotifyDrawing();
-            NotifyPageListChanged();
-            NotifyCurrentPageChanged();
+            NotifyDataChanged();
         }
 
         // Is redo
@@ -290,10 +281,7 @@ namespace PowerPoint.Model
         public void Redo()
         {
             _commandManager.Redo();
-            NotifyShapeListChanged();
-            NotifyDrawing();
-            NotifyPageListChanged();
-            NotifyCurrentPageChanged();
+            NotifyDataChanged();
         }
 
         // Save
@@ -302,16 +290,19 @@ namespace PowerPoint.Model
             _googleDrive.Save(_pageList);
         }
 
+        // Upload
+        public void Upload()
+        {
+            _googleDrive.Upload();
+        }
+
         // Load
         public void Load()
         {
-            _googleDrive.Load(_pageList);
+            _pageList.Clear();
+            _googleDrive.Load(_pageList, _currentPageIndex);
             _commandManager.Clear();
-            _currentPageIndex.SetPageIndex(0);
-            NotifyShapeListChanged();
-            NotifyDrawing();
-            NotifyPageListChanged();
-            NotifyCurrentPageChanged();
+            NotifyDataChanged();
         }
 
         // Notify shape list observer
@@ -335,18 +326,19 @@ namespace PowerPoint.Model
                 _canvasSizeChanged();
         }
 
-        // Notify page list observer
-        public void NotifyPageListChanged()
+        // Notify page observer
+        public void NotifyPageChanged()
         {
-            if (_pageListChanged != null)
-                _pageListChanged();
+            if (_pageChanged != null)
+                _pageChanged();
         }
 
-        // Notify current page observer
-        public void NotifyCurrentPageChanged()
+        // Notify all
+        private void NotifyDataChanged()
         {
-            if (_currentPageChanged != null)
-                _currentPageChanged();
+            NotifyShapeListChanged();
+            NotifyDrawing();
+            NotifyPageChanged();
         }
     }
 }

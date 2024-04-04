@@ -24,6 +24,7 @@ namespace PowerPoint.View
         private void ClickLoadButton(object sender, EventArgs e)
         {
             _model.Load();
+            this.Close();
         }
 
         // "Cancel" button click event

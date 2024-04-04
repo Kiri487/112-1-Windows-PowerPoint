@@ -39,6 +39,7 @@ namespace GoogleDriveUploader.GoogleDrive
             this.CreateNewService(applicationName, clientSecretFileName);
         }
 
+        // Create new service
         private void CreateNewService(string applicationName, string clientSecretFileName)
         {
             const string USER = "user";
@@ -47,9 +48,9 @@ namespace GoogleDriveUploader.GoogleDrive
 
             using (FileStream stream = new FileStream(clientSecretFileName, FileMode.Open, FileAccess.Read))
             {
-                string credentialPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
+                string credentialPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
                 credentialPath = Path.Combine(credentialPath, CREDENTIAL_FOLDER + applicationName);
-                credential = GoogleWebAuthorizationBroker.AuthorizeAsync(GoogleClientSecrets.Load(stream).Secrets, SCOPES, USER, CancellationToken.None, new FileDataStore(credentialPath, true)).Result;
+                credential = GoogleWebAuthorizationBroker.AuthorizeAsync(GoogleClientSecrets.FromStream(stream).Secrets, SCOPES, USER, CancellationToken.None, new FileDataStore(credentialPath, true)).Result;
             }
 
             DriveService service = new DriveService (new BaseClientService.Initializer ()
@@ -82,27 +83,6 @@ namespace GoogleDriveUploader.GoogleDrive
 
             if ((nowTimeStamp - _timeStamp) > ONE_HOUR_SECOND)
                 this.CreateNewService(_applicationName, _clientSecretFileName);
-        }
-
-        /// <summary>
-        /// 查詢Google Drive 根目錄的檔案
-        /// </summary>
-        /// <returns>Google Drive File List</returns>
-        public List<Google.Apis.Drive.v2.Data.File> ListRootFileAndFolder()
-        {
-            List<Google.Apis.Drive.v2.Data.File> returnList = new List<Google.Apis.Drive.v2.Data.File>();
-            const string ROOT_QUERY_STRING = "'root' in parents";
-
-            try
-            {
-                returnList = ListFileAndFolderWithQueryString(ROOT_QUERY_STRING);
-            }
-            catch (Exception exception)
-            {
-                throw exception;
-            }
-
-            return returnList;
         }
 
         /// <summary>
@@ -211,48 +191,22 @@ namespace GoogleDriveUploader.GoogleDrive
         }
 
         /// <summary>
-        /// 刪除符合FileID的檔案
+        /// 根據檔案名稱下載
         /// </summary>
-        /// <param name="fileId">欲刪除檔案的FileID</param>
-        public void DeleteFile(string fileId)
+        /// <param name="fileName">欲下載的檔案(Google Drive File)</param>
+        /// <param name="downloadPath">下載到路徑</param>
+        public void DownloadFileByName(string fileName, string downloadPath)
         {
-            CheckCredentialTimeStamp();
-            try
-            {
-                _service.Files.Delete(fileId).Execute();
-            }
-            catch (Exception exception)
-            {
-                throw exception;
-            }
-        }
+            string queryString = $"title = '{fileName}'";
+            var files = ListFileAndFolderWithQueryString(queryString);
 
-        /// <summary>
-        /// 更新指定FileID的檔案
-        /// </summary>
-        /// <param name="fileName">欲上傳至Google Drive並覆蓋在Google Drive上舊版檔案的檔案位置 </param>
-        /// <param name="fileId">存在於Google Drive 舊版檔案的FileID </param>
-        /// <param name="contentType">MIME Type</param>
-        /// <returns>如更新成功，回傳更新後的Google Drive File</returns>
-        public Google.Apis.Drive.v2.Data.File UpdateFile(string fileName, string fileId, string contentType)
-        {
-            CheckCredentialTimeStamp();
-            try
+            if (files == null || files.Count == 0)
             {
-                Google.Apis.Drive.v2.Data.File file = _service.Files.Get(fileId).Execute();
-                byte[] byteArray = System.IO.File.ReadAllBytes(fileName);
-                MemoryStream stream = new MemoryStream(byteArray);
-                FilesResource.UpdateMediaUpload request = _service.Files.Update(file, fileId, stream, contentType);
-                request.NewRevision = true;
-                request.Upload();
+                throw new FileNotFoundException($"File {fileName} not found on Google Drive.");
+            }
 
-                Google.Apis.Drive.v2.Data.File updatedFile = request.ResponseBody;
-                return updatedFile;
-            }
-            catch (Exception exception)
-            {
-                throw exception;
-            }
+            var fileToDownload = files.First();
+            DownloadFile(fileToDownload, downloadPath);
         }
     }
 }
